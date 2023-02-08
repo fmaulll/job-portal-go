@@ -14,9 +14,8 @@ import (
 
 func Signup(context *gin.Context) {
 	var body struct {
-		Username     string
-		Password     string
-		BusinessName string
+		Username string
+		Password string
 	}
 
 	if context.Bind(&body) != nil {
@@ -33,7 +32,7 @@ func Signup(context *gin.Context) {
 		return
 
 	}
-	user := models.User{Username: body.Username, Password: string(hash), BusinessName: body.BusinessName}
+	user := models.User{Username: body.Username, Password: string(hash)}
 
 	result := initializers.DB.Create(&user)
 
@@ -49,7 +48,7 @@ func Signup(context *gin.Context) {
 
 func Login(context *gin.Context) {
 	var body struct {
-		Email    string
+		Username string
 		Password string
 	}
 
@@ -59,7 +58,7 @@ func Login(context *gin.Context) {
 		return
 	}
 	var user models.User
-	initializers.DB.First(&user, "email = ?", body.Email)
+	initializers.DB.First(&user, "username = ?", body.Username)
 
 	if user.ID == 0 {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Invalid email or password"})
@@ -90,9 +89,9 @@ func Login(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{
-		"message":      "Login successfully",
-		"token":        tokenString,
-		"businessName": user.BusinessName,
-		"id":           user.ID,
+		"message":  "Login successfully",
+		"token":    tokenString,
+		"id":       user.ID,
+		"username": body.Username,
 	})
 }
