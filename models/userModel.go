@@ -5,9 +5,8 @@ import (
 )
 
 type User struct {
-	ID           uint      `gorm:"primaryKey" json:"id"`
-	CreatedAt    time.Time `json:"createdAt"`
-	Username     string    `gorm:"unique" json:"username"`
-	Password     string
-	BusinessName string `json:"businessName"`
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	Username  string    `gorm:"unique" json:"username"`
+	Password  string
 }
