@@ -20,7 +20,14 @@ func main() {
 	router := gin.Default()
 	router.Static("/images/", "./images")
 
-	router.Use(cors.Default())
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
+		AllowCredentials: true,
+	}))
+	// router.Use(cors.Default())
 
 	router.POST("/api/signup", controllers.Signup)
 	router.POST("/api/login", controllers.Login)
